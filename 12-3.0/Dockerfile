@@ -1,8 +1,9 @@
-FROM postgres:10.12
-MAINTAINER Mike Dillon <mike@appropriate.io>
+FROM postgres:12
 
-ENV POSTGIS_MAJOR 2.4
-ENV POSTGIS_VERSION 2.4.4+dfsg-4.pgdg90+1
+LABEL maintainer="PostGIS Project - https://postgis.net"
+
+ENV POSTGIS_MAJOR 3
+ENV POSTGIS_VERSION 3.0.0+dfsg-2~exp1.pgdg100+1
 
 RUN apt-get update \
       && apt-cache showpkg postgresql-$PG_MAJOR-postgis-$POSTGIS_MAJOR \
