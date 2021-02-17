@@ -2,8 +2,8 @@ FROM postgres:9.5-alpine
 
 LABEL maintainer="PostGIS Project - https://postgis.net"
 
-ENV POSTGIS_VERSION 3.0.1
-ENV POSTGIS_SHA256 5451a34c0b9d65580b3ae44e01fefc9e1f437f3329bde6de8fefde66d025e228
+ENV POSTGIS_VERSION 3.0.3
+ENV POSTGIS_SHA256 9aae25d46dc8b124f6e8a35886edcf9bd23a3ab049090edd8335b9c7324cae74
 
 RUN set -ex \
     \
@@ -39,12 +39,14 @@ RUN set -ex \
         llvm10-dev \
         proj-dev \
         protobuf-c-dev \
+        pcre-dev \
     && cd /usr/src/postgis \
     && ./autogen.sh \
 # configure options taken from:
 # https://anonscm.debian.org/cgit/pkg-grass/postgis.git/tree/debian/rules?h=jessie
     && ./configure \
 #       --with-gui \
+        --with-pcredir="$(pcre-config --prefix)" \
     && make -j$(nproc) \
     && make install \
 # regress check
@@ -63,6 +65,7 @@ RUN set -ex \
         geos \
         gdal \
         proj \
+        pcre \
         libstdc++ \
         protobuf-c \
 # clean
