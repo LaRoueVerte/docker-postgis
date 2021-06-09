@@ -40,14 +40,15 @@ RUN set -ex \
       build-essential \
       ca-certificates \
       cmake \
-      git \
       g++ \
+      git \
       libboost-all-dev \
       libcgal-dev \
       libcurl4-gnutls-dev \
       libgmp-dev \
       libjson-c-dev \
       libmpfr-dev \
+      libpcre3-dev \
       libprotobuf-c-dev \
       libsqlite3-dev \
       libtiff-dev \
@@ -56,12 +57,11 @@ RUN set -ex \
       make \
       pkg-config \
       protobuf-c-compiler \
-      xsltproc \
-      libpcre3-dev
+      xsltproc
 
 # sfcgal
 ENV SFCGAL_VERSION master
-ENV SFCGAL_GIT_HASH e1e67b58abf0e51dcce3bbb0ebd2429cca36c945
+ENV SFCGAL_GIT_HASH 0beb9d6dde86467d412e70037dca0e00091e673e
 
 RUN set -ex \
     && mkdir -p /usr/src \
@@ -78,14 +78,8 @@ RUN set -ex \
     && rm -fr /usr/src/SFCGAL
 
 # proj
-###ENV PROJ_VERSION master
-###ENV PROJ_GIT_HASH db2950e56ea26a0949b71378d73559a16fc40f26
-
-### Issue with proj v8 not being compatible
-### see https://github.com/postgis/docker-postgis/pull/220#issuecomment-765864268
-### Below is a temp fix
-ENV PROJ_VERSION 7.2.1
-ENV PROJ_GIT_HASH 1212e9b818e4511cc9389b9bdb5daa0bec1a12bd
+ENV PROJ_VERSION master
+ENV PROJ_GIT_HASH dcc2a94eb1c5eda5ede6275b58ae5873e78bb9c0
 
 RUN set -ex \
     && cd /usr/src \
@@ -101,10 +95,7 @@ RUN set -ex \
 
 # geos
 ENV GEOS_VERSION master
-###ENV GEOS_GIT_HASH 17ab55a55aeed3e5a0a83b05428463bf1646471f
-### lock Commits on Jan 19, 2021
-### temp fix,  see https://github.com/postgis/docker-postgis/pull/220#issuecomment-770156316
-ENV GEOS_GIT_HASH 98641ab14e01a6b5a6339f49fa6f1bee4424c7d0
+ENV GEOS_GIT_HASH 02f912883af916e2eb99a090255c9302a155e092
 
 RUN set -ex \
     && cd /usr/src \
@@ -121,7 +112,7 @@ RUN set -ex \
 
 # gdal
 ENV GDAL_VERSION master
-ENV GDAL_GIT_HASH ae1531a20a4079fc0739676a3c01c760f674bbf6
+ENV GDAL_GIT_HASH e635362bb1a3c517489cc4d09fe2a41f0869c199
 
 RUN set -ex \
     && cd /usr/src \
@@ -170,14 +161,19 @@ RUN set -ex \
       libgmpxx4ldbl \
       libjson-c3 \
       libmpfr6 \
+      libpcre3 \
       libprotobuf-c1 \
       libtiff5 \
       libxml2 \
       sqlite3 \
-      libpcre3 \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /usr/local /usr/local
+
+ENV SFCGAL_GIT_HASH 0beb9d6dde86467d412e70037dca0e00091e673e
+ENV PROJ_GIT_HASH dcc2a94eb1c5eda5ede6275b58ae5873e78bb9c0
+ENV GEOS_GIT_HASH 02f912883af916e2eb99a090255c9302a155e092
+ENV GDAL_GIT_HASH e635362bb1a3c517489cc4d09fe2a41f0869c199
 
 # Minimal command line test.
 RUN set -ex \
@@ -191,7 +187,7 @@ RUN set -ex \
 
 # install postgis
 ENV POSTGIS_VERSION master
-ENV POSTGIS_GIT_HASH 52f942583b5b9c975799bf8eefadc756a5f56215
+ENV POSTGIS_GIT_HASH 429bf56aa47e55a13555a15d20ef08a1c14d2aba
 
 RUN set -ex \
     && apt-get update \
@@ -203,8 +199,8 @@ RUN set -ex \
       build-essential \
       ca-certificates \
       cmake \
-      git \
       g++ \
+      git \
       libboost-all-dev \
       libcgal-dev \
       libcurl4-gnutls-dev \
@@ -258,20 +254,20 @@ RUN set -ex \
       build-essential \
       ca-certificates \
       cmake \
-      git \
       g++ \
+      git \
       libboost-all-dev \
       libcgal-dev \
       libcurl4-gnutls-dev \
       libgmp-dev \
       libjson-c-dev \
       libmpfr-dev \
+      libpcre3-dev \
       libprotobuf-c-dev \
       libsqlite3-dev \
       libtiff-dev \
       libtool \
       libxml2-dev \
-      libpcre3-dev \
       make \
       pkg-config \
       postgresql-server-dev-$PG_MAJOR \
